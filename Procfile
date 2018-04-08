@@ -1,0 +1,1 @@
+bot: ruby auto_fav_ripu.rb
