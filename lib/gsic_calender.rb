@@ -1,5 +1,8 @@
 require 'google/apis/calendar_v3'
 require 'holiday_jp'
+require 'dotenv'
+
+Dotenv.load
 
 class GSICCalender
   def initialize

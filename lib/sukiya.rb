@@ -1,11 +1,12 @@
 require 'open-uri'
 require 'json'
+require 'dotenv'
 
 Encoding.default_external = 'utf-8'
 
-#ENV['SSL_CERT_FILE'] = File.expand_path('./../cacert.pem')
+Dotenv.load
 
-YAHOO_ID = ENV['YAHOO']
+YAHOO_ID = ENV['YAHOO_API_KEY']
 
 class Sukiya
   def initialize(point, destination)
