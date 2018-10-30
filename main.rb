@@ -176,8 +176,8 @@ client.mentions_timeline(count: 10).each do |tweet|
           contents = content.byteslice(0, 279).scrub("")
           client.update(contents, options = {:in_reply_to_status_id => tweet.id}) 
         end
-      elsif /^\d+$/ === tweet.text
-        num = tweet.text.match(/(\d+)/)
+      elsif /\d+$/ === tweet.text
+        num = tweet.text.match(/(\d+)$/)
         po = Prime.prime_division(num[1])
         content = ""
         po.each do |popo|
