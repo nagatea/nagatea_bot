@@ -1,5 +1,6 @@
 require "twitter"
 require "dotenv"
+require "prime"
 require "./lib/time.rb"
 require "./lib/cheesecake.rb"
 require "./lib/weather.rb"
@@ -175,6 +176,15 @@ client.mentions_timeline(count: 10).each do |tweet|
           contents = content.byteslice(0, 279).scrub("")
           client.update(contents, options = {:in_reply_to_status_id => tweet.id}) 
         end
+      elsif /^\d+$/ === tweet.text
+        num = tweet.text.match(/(\d+)/)
+        po = Prime.prime_division(num[1])
+        content = ""
+        po.each do |popo|
+          content << "#{popo[0]}^#{popo[1]} * "
+        end
+        contents = content[0..-3]
+        client.update(contents, options = {:in_reply_to_status_id => tweet.id})
       else
         if (JSTTime.time.sec.to_i % 10) == 0
           client.favorite(tweet.id)
