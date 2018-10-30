@@ -178,18 +178,22 @@ client.mentions_timeline(count: 10).each do |tweet|
         end
       elsif /\d+$/ === tweet.text
         num = tweet.text.match(/(\d+)$/)
-        po = Prime.prime_division(num[1])
+        po = Prime.prime_division(num[1].to_i)
         content = ""
         po.each do |popo|
-          content << "#{popo[0]}^#{popo[1]} * "
+          if (popo[1] == 1)
+            content << "#{popo[0]} * "
+          else
+            content << "#{popo[0]}^#{popo[1]} * "
+          end
         end
         contents = content[0..-3]
-        client.update(contents, options = {:in_reply_to_status_id => tweet.id})
+        client.update("@#{tweet.user.screen_name} \n#{contents}", options = {:in_reply_to_status_id => tweet.id})
       else
         if (JSTTime.time.sec.to_i % 10) == 0
           client.favorite(tweet.id)
         else
-          client.update("@#{tweet.user.screen_name} ふぇぇ、わからないよぅ><", options = {:in_reply_to_status_id => tweet.id})
+          client.update("@#{tweet.user.screen_name} \nふぇぇ、わからないよぅ><", options = {:in_reply_to_status_id => tweet.id})
         end
       end
     end
