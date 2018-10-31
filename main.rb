@@ -189,7 +189,7 @@ client.mentions_timeline(count: 10).each do |tweet|
             end
           end
           contents = content[0..-3]
-          if /\*/ !== contents && /\^/ !== contents
+          unless /\*/ === contents || /\^/ === contents
             client.update("@#{tweet.user.screen_name} \n素数だよ", options = {:in_reply_to_status_id => tweet.id})
           else
             client.update("@#{tweet.user.screen_name} \n#{contents}", options = {:in_reply_to_status_id => tweet.id})
