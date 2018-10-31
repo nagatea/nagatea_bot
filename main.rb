@@ -1,5 +1,6 @@
 require "twitter"
 require "dotenv"
+require "prime"
 require "./lib/time.rb"
 require "./lib/cheesecake.rb"
 require "./lib/weather.rb"
@@ -175,11 +176,32 @@ client.mentions_timeline(count: 10).each do |tweet|
           contents = content.byteslice(0, 279).scrub("")
           client.update(contents, options = {:in_reply_to_status_id => tweet.id}) 
         end
+      elsif /\d+$/ === tweet.text
+        num = tweet.text.match(/(\d+)$/)
+        if num[1].length < 20
+          po = Prime.prime_division(num[1].to_i)
+          content = ""
+          po.each do |popo|
+            if (popo[1] == 1)
+              content << "#{popo[0]} * "
+            else
+              content << "#{popo[0]}^#{popo[1]} * "
+            end
+          end
+          contents = content[0..-3]
+          unless /\*/ === contents || /\^/ === contents
+            client.update("@#{tweet.user.screen_name} \n素数だよ", options = {:in_reply_to_status_id => tweet.id})
+          else
+            client.update("@#{tweet.user.screen_name} \n#{contents}", options = {:in_reply_to_status_id => tweet.id})
+          end
+        else
+          client.update("@#{tweet.user.screen_name} \nふぇぇ、計算できないよぅ><", options = {:in_reply_to_status_id => tweet.id})
+        end
       else
         if (JSTTime.time.sec.to_i % 10) == 0
           client.favorite(tweet.id)
         else
-          client.update("@#{tweet.user.screen_name} ふぇぇ、わからないよぅ><", options = {:in_reply_to_status_id => tweet.id})
+          client.update("@#{tweet.user.screen_name} \nふぇぇ、わからないよぅ><", options = {:in_reply_to_status_id => tweet.id})
         end
       end
     end
