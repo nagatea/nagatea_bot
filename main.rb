@@ -198,11 +198,7 @@ client.mentions_timeline(count: 10).each do |tweet|
           client.update("@#{tweet.user.screen_name} \nふぇぇ、計算できないよぅ><", options = {:in_reply_to_status_id => tweet.id})
         end
       else
-        if (JSTTime.time.sec.to_i % 10) == 0
-          client.favorite(tweet.id)
-        else
-          client.update("@#{tweet.user.screen_name} \nふぇぇ、わからないよぅ><", options = {:in_reply_to_status_id => tweet.id})
-        end
+        client.favorite(tweet.id)
       end
     end
   end
