@@ -9,6 +9,7 @@ require "./lib/weather_image.rb"
 require "./lib/sukiya.rb"
 require "./lib/weather_week.rb"
 require "./lib/gsic_calender.rb"
+require "./lib/volte_factory.rb"
 
 Dotenv.load
 
@@ -176,6 +177,16 @@ client.mentions_timeline(count: 10).each do |tweet|
           contents = content.byteslice(0, 279).scrub("")
           client.update(contents, options = {:in_reply_to_status_id => tweet.id}) 
         end
+      elsif /ボルテ/ === tweet.text
+        volte_factory = VolteFactory.new
+        shop_name = tweet.text.match(/ボルテ\s(.+)/)
+        content = ""
+        if shop_name[1].nil?
+          content = "よくわからない"
+        else
+          content = volte_factory.get_zaiko(shop_name[1])
+        end
+        client.update(content, options = {:in_reply_to_status_id => tweet.id}) 
       elsif /\d+$/ === tweet.text
         num = tweet.text.match(/(\d+)$/)
         if num[1].length < 20
