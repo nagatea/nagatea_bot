@@ -179,14 +179,15 @@ client.mentions_timeline(count: 10).each do |tweet|
         end
       elsif /ボルテ/ === tweet.text
         volte_factory = VolteFactory.new
-        shop_name = tweet.text.match(/ボルテ\s(.+)/)
+        shop_name = tweet.text.match(/ボルテ\s?(.+)/)
         content = ""
         if shop_name[1].nil?
           content = "よくわからない"
         else
           content = volte_factory.get_zaiko(shop_name[1])
         end
-        client.update(content, options = {:in_reply_to_status_id => tweet.id}) 
+        contents = "@#{tweet.user.screen_name} \n#{content}"
+        client.update(contents, options = {:in_reply_to_status_id => tweet.id}) 
       elsif /\d+$/ === tweet.text
         num = tweet.text.match(/(\d+)$/)
         if num[1].length < 20
