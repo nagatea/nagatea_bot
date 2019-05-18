@@ -116,7 +116,7 @@ client.mentions_timeline(count: 10).each do |tweet|
           contents = content.scan(/.{1,140}/m)
           client.update("@#{tweet.user.screen_name} #{contents[0]}", options = {:in_reply_to_status_id => tweet.id}) 
         else
-          content = cheese.get_cheesecake(cheese.get_month,cheese.get_day)
+          content = cheese.get_cheesecake
           contents = content.scan(/.{1,140}/m)
           client.update("@#{tweet.user.screen_name} #{contents[0]}", options = {:in_reply_to_status_id => tweet.id}) 
         end
